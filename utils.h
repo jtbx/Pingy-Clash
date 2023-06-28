@@ -6,9 +6,9 @@ typedef struct monster {
     float spd;
 } monster;
 
-int   sfgets(char*, int);
+char* sfgets(char*, int);
 char* wait(unsigned int);
 int   wprint(char*, int);
 int   playerturn(monster*, monster*, char*);
 int   enemyturn(monster*, monster*, char*);
-int showstats(char*, monster*);
+int   showstats(char*, monster*);
