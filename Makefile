@@ -1,8 +1,19 @@
-main: main.o utils.o
-	gcc -o main main.o utils.o
+CC = gcc
+CFLAGS = -std=c11 -O
+OBJS = main.o utils.o
 
-main.o: main.c
-	gcc -o main.o -c main.c
+all: pingyclash
+
+pingyclash: ${OBJS}
+	${CC} ${CFLAGS} -o $@ ${OBJS}
+
+main.o: main.c utils.h
+	${CC} ${CFLAGS} -o $@ -c $<
 
 utils.o: utils.c
-	gcc -o utils.o -c utils.c
+	${CC} ${CFLAGS} -o $@ -c $<
+
+clean:
+	rm -f pingyclash ${OBJS}
+
+.PHONY: all clean
