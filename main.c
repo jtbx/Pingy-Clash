@@ -22,10 +22,10 @@ int main(void) {
     printf("|_|   |_|_| |_|\\__, |\\__, |  \\_____|_|\\__,_|___/_| |_| \n");
     printf("                __/ | __/ |                                \n");
     printf("               |___/ |___/                                 \n");
-    printf("\nWeclome to Pingy Clash, a battle TUI game made with C.   \n");
-    printf("The project is open source and the source code is available " );
-    printf("on my github.\nI hope you enjoy the game as mush as i enoyed ");
-    printf("coding it !                                                \n");
+    printf("\nWelcome to Pingy Clash, a battle TUI game made with C.   \n");
+    printf("The project is open source and the source code is available  ");
+    printf("on my github.\nI hope you enjoy the game as much as I enjoyed");
+    printf("coding it!                                                \n");
     /* The setup of the player's monster's stats and name. */
     do {
         printf("\nYou may now enter the name of your monster > ");
@@ -48,8 +48,8 @@ int main(void) {
         else if (i == 2) player.def += strtol(input, NULL, 10);
         else player.spd += strtol(input, NULL, 10);
     }
-    showstats("Your monster's stats are :", &player);
-    showstats("The enemy monster's stats are :", &enemy);
+    showstats("Your monster's stats are:", &player);
+    showstats("The enemy monster's stats are:", &enemy);
     /* The battle against the premade enemy monster bot */
     printf("\nLet the battle begin !\n\n");
     while (true) {
@@ -67,7 +67,7 @@ int main(void) {
         }
     }
     /* The winner's hall of fame and the credits. */
-    if (player.hp < 1) printf("\n%s is the winner !", enemy.name);
+    if (player.hp < 1) printf("\n%s is the winner!", enemy.name);
     else printf("%s is the winner !", player.name);
     return 0;
 }
@@ -75,7 +75,7 @@ int main(void) {
 /* The function that executes the player's turn. */
 int playerturn(monster* player, monster* enemy, char* input) {
     printf("|%s's HP: %.0f| - |%s's HP: %.0f|\n", player->name, player->hp, enemy->name, enemy->hp);
-    printf("It's %s's turn !   \n", player->name);
+    printf("It's %s's turn!   \n", player->name);
     printf("Press the enter key to continue\n\n");
     sfgets(input, 20);
     enemy->hp -= (((player->atk / enemy->def) * 10) + rand() % 15);
@@ -85,7 +85,7 @@ int playerturn(monster* player, monster* enemy, char* input) {
 /* The function that executes the enemy's turn. */
 int enemyturn(monster* player, monster* enemy, char* input) {
     printf("|%s's HP: %.0f| - |%s's HP: %.0f|\n", player->name, player->hp, enemy->name, enemy->hp);
-    printf("It's %s's turn !    \n", enemy->name);
+    printf("It's %s's turn!    \n", enemy->name);
     printf("Press the enter key to continue\n\n");
     sfgets(input, 20);
     player->hp -= (((enemy->atk / player->def) * 10) + rand() % 15);
