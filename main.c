@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdbool.h>
 #include <time.h>
 #include "utils.h"
 
@@ -34,6 +33,7 @@ int main(void) {
     strcpy(player.name, input);
     for (int i = 0; i < 4; i++) {
         char str[10] = "_";
+		long n; /* number of points given by user */
         if (i == 0) strcpy(str, "health");
         else if (i == 1) strcpy(str, "attack");
         else if (i == 2) strcpy(str, "defense");
@@ -41,18 +41,19 @@ int main(void) {
         do {
             printf("\nSet your monster's %s points (%d points left) > ", str, points);
             sfgets(input, 20);
-        } while (strtol(input, NULL, 10) > points || strtol(input, NULL, 10) < 1);
-        points -= strtol(input, NULL, 10);
-        if (i == 0) player.hp += strtol(input, NULL, 10);
-        else if (i == 1) player.atk += strtol(input, NULL, 10);
-        else if (i == 2) player.def += strtol(input, NULL, 10);
-        else player.spd += strtol(input, NULL, 10);
+			n = strtol(input, NULL, 10);
+        } while (n > points || n < 0);
+        points -= n;
+        if (i == 0) player.hp += n;
+        else if (i == 1) player.atk += n;
+        else if (i == 2) player.def += n;
+        else player.spd += n;
     }
     showstats("Your monster's stats are:", &player);
     showstats("The enemy monster's stats are:", &enemy);
     /* The battle against the premade enemy monster bot */
-    printf("\nLet the battle begin !\n\n");
-    while (true) {
+    printf("\nLet the battle begin!\n\n");
+    for (;;) {
         if ((player.spd + (rand() % 10)) >= (enemy.spd + (rand() % 10))) {
             if (player.hp < 1 || enemy.hp < 1) break;
             else playerturn(&player, &enemy, input);
@@ -68,7 +69,7 @@ int main(void) {
     }
     /* The winner's hall of fame and the credits. */
     if (player.hp < 1) printf("\n%s is the winner!", enemy.name);
-    else printf("%s is the winner !", player.name);
+    else printf("%s is the winner!\n", player.name);
     return 0;
 }
 
@@ -102,3 +103,5 @@ int showstats(char* str, monster* monster) {
     printf("Speed:   %.0f\n", monster->spd);
     return 1;
 }
+
+// vi: ff=dos
