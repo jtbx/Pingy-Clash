@@ -2,9 +2,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+
+#include "battle.h"
 #include "utils.h"
 
-int main(void) {
+#define checkhp(player, enemy)             \
+    if ((player).hp < 1 || (enemy).hp < 1) \
+		break;
+
+
+int main(int argc, char *argv[]) {
     /* The local variables defined within the main function. */
     monster player = {"_", 1, 1, 1, 1};
     monster enemy = {"Pingy Chad", 250, 250, 250, 250};
@@ -31,77 +38,53 @@ int main(void) {
         sfgets(input, 20);
     } while (strlen(input) < 1 || input[0] == '\0');
     strcpy(player.name, input);
-    for (int i = 0; i < 4; i++) {
+    for (statistic s = HEALTH; s < 4; s++) {
         char str[10] = "_";
 		long n; /* number of points given by user */
-        if (i == 0) strcpy(str, "health");
-        else if (i == 1) strcpy(str, "attack");
-        else if (i == 2) strcpy(str, "defense");
-        else strcpy(str, "speed");
+        strcpy(str,
+			s == HEALTH ?  "health" :
+			s == ATTACK ?  "attack" :
+			s == DEFNSE ? "defense" :
+			"speed"
+		);
         do {
             printf("\nSet your monster's %s points (%d points left) > ", str, points);
             sfgets(input, 20);
 			n = strtol(input, NULL, 10);
         } while (n > points || n < 0);
         points -= n;
-        if (i == 0) player.hp += n;
-        else if (i == 1) player.atk += n;
-        else if (i == 2) player.def += n;
-        else player.spd += n;
+		switch (s) {
+			case HEALTH:
+				player.hp += n;
+			case ATTACK:
+				player.atk += n;
+			case DEFNSE:
+				player.def += n;
+			default:
+				player.spd += n;
+		}
     }
     showstats("Your monster's stats are:", &player);
     showstats("The enemy monster's stats are:", &enemy);
     /* The battle against the premade enemy monster bot */
     printf("\nLet the battle begin!\n\n");
     for (;;) {
-        if ((player.spd + (rand() % 10)) >= (enemy.spd + (rand() % 10))) {
-            if (player.hp < 1 || enemy.hp < 1) break;
-            else playerturn(&player, &enemy, input);
-            if (player.hp < 1 || enemy.hp < 1) break;
-            else enemyturn(&player, &enemy, input);
-        }
-        else {
-            if (player.hp < 1 || enemy.hp < 1) break;
-            else enemyturn(&player, &enemy, input);
-            if (player.hp < 1 || enemy.hp < 1) break;
-            else playerturn(&player, &enemy, input);
+        if (player.spd + (rand() % 10) >= enemy.spd + (rand() % 10)) {
+			checkhp(player, enemy);
+			playerturn(&player, &enemy, input);
+			checkhp(player, enemy);
+			enemyturn(&player, &enemy, input);
+        } else {
+			checkhp(player, enemy);
+            enemyturn(&player, &enemy, input);
+			checkhp(player, enemy);
+            playerturn(&player, &enemy, input);
         }
     }
     /* The winner's hall of fame and the credits. */
-    if (player.hp < 1) printf("\n%s is the winner!", enemy.name);
-    else printf("%s is the winner!\n", player.name);
+    printf("%s is the winner!\n", (player.hp < 1 ? enemy : player).name);
+
     return 0;
-}
-
-/* The function that executes the player's turn. */
-int playerturn(monster* player, monster* enemy, char* input) {
-    printf("|%s's HP: %.0f| - |%s's HP: %.0f|\n", player->name, player->hp, enemy->name, enemy->hp);
-    printf("It's %s's turn!   \n", player->name);
-    printf("Press the enter key to continue\n\n");
-    sfgets(input, 20);
-    enemy->hp -= (((player->atk / enemy->def) * 10) + rand() % 15);
-    return 1;
-}
-
-/* The function that executes the enemy's turn. */
-int enemyturn(monster* player, monster* enemy, char* input) {
-    printf("|%s's HP: %.0f| - |%s's HP: %.0f|\n", player->name, player->hp, enemy->name, enemy->hp);
-    printf("It's %s's turn!    \n", enemy->name);
-    printf("Press the enter key to continue\n\n");
-    sfgets(input, 20);
-    player->hp -= (((enemy->atk / player->def) * 10) + rand() % 15);
-    return 1;
-}
-
-/* The function that shows the monster's stats */
-int showstats(char* str, monster* monster) {
-    printf("\n%s                  \n", str);
-    printf("Name:    %s \n", monster->name);
-    printf("Health:  %.0f \n", monster->hp);
-    printf("Attack:  %.0f\n", monster->atk);
-    printf("Defense: %.0f\n", monster->def);
-    printf("Speed:   %.0f\n", monster->spd);
-    return 1;
 }
 
 // vi: ff=dos
