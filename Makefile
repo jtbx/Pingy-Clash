@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -std=c11 -O
-OBJS = main.o utils.o
+OBJS = main.o battle.o utils.o
 
 all: pingyclash
 
@@ -8,6 +8,9 @@ pingyclash: ${OBJS}
 	${CC} ${CFLAGS} -o $@ ${OBJS}
 
 main.o: main.c utils.h
+	${CC} ${CFLAGS} -o $@ -c $<
+
+battle.o: battle.c utils.h
 	${CC} ${CFLAGS} -o $@ -c $<
 
 utils.o: utils.c
