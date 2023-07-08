@@ -5,11 +5,11 @@
 #define _BATTLE_H_
 
 typedef struct monster {
-    char  name[20];
-    float hp;
-    float atk;
-    float def;
-    float spd;
+	char  name[20];
+	float hp;
+	float atk;
+	float def;
+	float spd;
 } monster;
 
 typedef enum statistic {

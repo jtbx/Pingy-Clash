@@ -9,12 +9,12 @@ char* sfgets(char* str, int size) {
 	if (ret == NULL) /* did fgets fail? */
 		return ret;
 
-    fflush(stdin);
-    str[strlen(str) - 1] = '\0';
-    return str;
+	fflush(stdin);
+	str[strlen(str) - 1] = '\0';
+	return str;
 }
 
 void wait(unsigned int secs) {
-    int count = time(0) + secs;
-    while (time(0) < count);
+	int count = time(0) + secs;
+	while (time(0) < count);
 }
